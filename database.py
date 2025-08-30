@@ -107,7 +107,7 @@ class DatabaseManager:
             else:
                 query = "SELECT * FROM flashcards ORDER BY created_at DESC"
                 cursor.execute(query)
-            
+
             flashcards = cursor.fetchall()
             cursor.close()
             connection.close()
@@ -117,3 +117,26 @@ class DatabaseManager:
         except Error as e:
             print(f"Error retrieving flashcards: {e}")
             return []
+
+    def save_study_session(self, session_name, original_text):
+        """Function to saving study session"""
+        try:
+            connection = self.create_connection()
+            cursor = connection.cursor()
+
+            query = """
+            INSERT INTO study_sessions (session_name, original_text)
+            VALUES (%s, %s)
+            """
+            cursor.execute(query, (session_name, original_text))
+            connection.commit()
+
+            session_id = cursor.lastrowid
+            cursor.close()
+            connection.close()
+
+            return session_id
+
+        except Error as e:
+            print(f"Error saving study session: {e}")
+            return None
