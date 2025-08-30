@@ -240,3 +240,33 @@ textarea:focus {
 .flashcard:hover .flashcard-face {
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
 }
+
+/* Navigation */
+.navigation {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.nav-btn {
+  padding: 12px 24px;
+  background: white;
+  border: 2px solid #667eea;
+  border-radius: 12px;
+  color: #667eea;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover:not(:disabled) {
+  background: #667eea;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
