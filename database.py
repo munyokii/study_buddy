@@ -94,3 +94,26 @@ class DatabaseManager:
         except Error as e:
             print(f"Error saving flashcard: {e}")
             return None
+
+    def get_all_flashcards(self, topic=None):
+        """Retrieving all flashcards from the database"""
+        try:
+            connection = self.create_connection()
+            cursor = connection.cursor(dictionary=True)
+
+            if topic:
+                query = "SELECT * FROM flashcards WHERE topic = %s ORDER BY created_at DESC"
+                cursor.execute(query, (topic,))
+            else:
+                query = "SELECT * FROM flashcards ORDER BY created_at DESC"
+                cursor.execute(query)
+            
+            flashcards = cursor.fetchall()
+            cursor.close()
+            connection.close()
+
+            return flashcards
+
+        except Error as e:
+            print(f"Error retrieving flashcards: {e}")
+            return []
