@@ -48,6 +48,36 @@ class QuestionGenerator:
             print(f"Error with Hugging Face API: {e}")
             return self.fallback_question_generation(text)
 
+    def fallback_question_generation(self, text):
+        """Fallback method to generate questions when API fails"""
+        sentences = text.split('.')
+        questions = []
+
+        keywords = ['what', 'how', 'why', 'when', 'where']
+
+        for i, sentence in enumerate(sentences[:5]):
+            if len(sentence.strip()) > 20:
+                # Questions type
+                question_type = keywords[i % len(keywords)]
+
+                if question_type == 'what':
+                    question = f"What is the main concept discussed in: '{sentence.strip()}'?"
+                elif question_type == 'how':
+                    question = f"How does this relate to the topic: '{sentence.strip()}'?"
+                elif question_type == 'why':
+                    question = f"Why is this important: '{sentence.strip()}'?"
+                elif question_type == 'when':
+                    question = f"When might this apply: '{sentence.strip()}'?"
+                else:
+                    question = f"Where would you use this information: '{sentence.strip()}'?"
+
+                questions.append({
+                    'question': question,
+                    'answer': sentence.strip(),
+                    'difficulty': 'medium'
+                })
+        return questions[:5]
+
 @app.route('/')
 def index():
     """Serves the main page"""
