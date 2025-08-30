@@ -78,6 +78,42 @@ class QuestionGenerator:
                 })
         return questions[:5]
 
+    def parse_questions_and_answers(self, generated_text):
+        """Parsing generated text to extract questions and answers"""
+        questions = []
+        lines = generated_text.split('\n')
+
+        current_question = ""
+        current_answer = ""
+
+        for line in lines:
+            line = line.strip()
+            if line.startswith('Q:'):
+                if current_question and current_answer:
+                    questions.append({
+                        'question': current_question,
+                        'answer': current_answer,
+                        'difficulty': 'medium'
+                    })
+                current_question = line[2:].strip()
+                current_answer = ""
+            elif line.startswith('A:'):
+                current_answer = line[2:].strip()
+            elif current_question and not current_answer:
+                current_question += " " + line
+            elif current_answer:
+                current_answer += " " + line
+
+        # Question-answer pair
+        if current_question and current_answer:
+            questions.append({
+                'question': current_question,
+                'answer': current_answer,
+                'difficulty': 'medium'
+            })
+
+        return questions[:5]
+
 @app.route('/')
 def index():
     """Serves the main page"""
