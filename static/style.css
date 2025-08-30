@@ -150,3 +150,41 @@ textarea:focus {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   display: none;
 }
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.flashcard-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.control-btn {
+  padding: 10px 20px;
+  background: #f8f9fa;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+  background: #0d101d;
+  color: white;
+  border-color: #0b0e1a;
+}
+
+.flashcard-counter {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
