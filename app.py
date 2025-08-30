@@ -158,7 +158,7 @@ def generate_flashcards():
         return jsonify({
             'success':True,
             'flashcards': saved_flashcards,
-            session_id: session_id
+            'session_id': session_id
         })
 
     except Exception as e:
@@ -166,7 +166,7 @@ def generate_flashcards():
             'error': str(e)
         }), 500
 
-@app.route('get_flashcards', methods=['GET'])
+@app.route('/get_flashcards', methods=['GET'])
 def get_flashcards():
     """Retrieving saved flashcards"""
     try:
