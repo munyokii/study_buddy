@@ -11,6 +11,10 @@ body {
   color: #333;
 }
 
+h2 {
+  margin-bottom: 10px;
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -246,7 +250,7 @@ textarea:focus {
 }
 
 .flashcard-back {
-  background: linear-gradient(135deg, #333333, #000000);
+  background: linear-gradient(135deg, #362020, #3c0d0d);
   color: white;
   transform: rotateY(180deg);
 }
