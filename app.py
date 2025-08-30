@@ -158,7 +158,7 @@ def generate_flashcards():
         return jsonify({
             'success':True,
             'flashcards': saved_flashcards,
-            session_id: session_id
+            'session_id': session_id
         })
 
     except Exception as e:
