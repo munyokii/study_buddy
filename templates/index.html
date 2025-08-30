@@ -1,11 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Study Buddy</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Study Buddy - Flashcard Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>🧠 AI Study Buddy</h1>
+    <div class="container">
+        <header>
+            <h1>🧠 AI Study Buddy</h1>
+            <p>Transform your notes into interactive flashcards</p>
+        </header>
+
+        <div class="input-section">
+            <h2>📝 Paste Your Study Notes</h2>
+            <div class="form-group">
+                <input type="text" id="topic" placeholder="Topic name (e.g., Biology, History)" class="topic-input">
+            </div>
+            <div class="form-group">
+                <textarea 
+                    id="study-text" 
+                    placeholder="Paste your study notes here. The AI will analyze the content and generate relevant quiz questions for you to study with..."
+                    rows="8"
+                ></textarea>
+            </div>
+            <button id="generate-btn" class="generate-btn">
+                <span class="btn-text">🚀 Generate Flashcards</span>
+                <div class="loader"></div>
+            </button>
+        </div>
+
+        <div class="flashcards-section" id="flashcards-section">
+            <div class="section-header">
+                <h2>📚 Your Flashcards</h2>
+                <div class="flashcard-controls">
+                    <button id="shuffle-btn" class="control-btn">🔀 Shuffle</button>
+                    <button id="reset-btn" class="control-btn">🔄 Reset</button>
+                    <span class="flashcard-counter">
+                        Card <span id="current-card">1</span> of <span id="total-cards">0</span>
+                    </span>
+                </div>
+            </div>
+            
+            <div class="flashcard-container" id="flashcard-container">
+                <!-- Flash cards go here -->
+            </div>
+            
+            <div class="navigation">
+                <button id="prev-btn" class="nav-btn">⬅️ Previous</button>
+                <button id="next-btn" class="nav-btn">Next ➡️</button>
+            </div>
+        </div>
+
+        <div class="saved-flashcards-section">
+            <h2>💾 Saved Flashcards</h2>
+            <div class="filter-controls">
+                <select id="topic-filter">
+                    <option value="">All Topics</option>
+                </select>
+                <button id="load-saved-btn" class="control-btn">Load Saved Cards</button>
+            </div>
+            <div id="saved-flashcards-container"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
