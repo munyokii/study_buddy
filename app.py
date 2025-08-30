@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, jsonify, render_template, request
 import requests
 from database import DatabaseManager
 from config import Config
@@ -116,8 +116,55 @@ class QuestionGenerator:
 
 @app.route('/')
 def index():
-    """Serves the main page"""
+    """Rendering main page"""
     return render_template('index.html')
+
+@app.route('/generate_flashcards', methods=['POST'])
+def generate_flashcards():
+    """Generating flashcards from study notes"""
+    try:
+        data = request.get_json()
+        study_text = data.get('text', '')
+        topic = data.get('topic', 'General')
+
+        if not study_text:
+            return jsonify({'error': 'No text provided'}), 400
+        
+        # Generating questions using AI
+        generator = QuestionGenerator()
+        questions = generator.generate_questions_huggingface(study_text)
+
+        # Saving flashcards to the database
+        saved_flashcards = []
+        for q in questions:
+            flashcard_id = db.save_flashcard(
+                q['question'],
+                q['answer'],
+                topic,
+                q.get('difficulty', 'medium')
+            )
+            if flashcard_id:
+                saved_flashcards.append({
+                    'id': flashcard_id,
+                    'question': q['question'],
+                    'answer': q['answer'],
+                    'topic': topic,
+                    'difficulty': q.get('difficulty', 'medium')
+                })
+        
+        # Saving session
+        session_id = db.save_study_session(f"Session - {topic}", study_text)
+
+        return jsonify({
+            'success':True,
+            'flashcards': saved_flashcards,
+            session_id: session_id
+        })
+    
+    except Exception as e:
+        return jsonify({
+            'error': str(e)
+        }), 500
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
