@@ -5,7 +5,7 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   background: linear-gradient(160deg, #999999 0%, #040404 100%);
   min-height: 100vh;
   color: #333;
@@ -28,7 +28,7 @@ header h1 {
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 10px;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 header p {
@@ -42,7 +42,7 @@ header p {
   border-radius: 20px;
   padding: 30px;
   margin-bottom: 30px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   transform: translateY(0);
   transition: transform 0.3s ease;
 }
@@ -79,9 +79,9 @@ textarea {
 }
 
 textarea:focus {
-    outline: none;
-    border-color: #0b0d19;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  outline: none;
+  border-color: #0b0d19;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 /* Button Styles */
@@ -115,4 +115,28 @@ textarea:focus {
 
 .generate-btn.loading .loader {
   display: block;
+}
+
+/* Loader Animation */
+.loader {
+  display: none;
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
