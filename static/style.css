@@ -140,3 +140,13 @@ textarea:focus {
     transform: translate(-50%, -50%) rotate(360deg);
   }
 }
+
+/* Flashcards Section */
+.flashcards-section {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  display: none;
+}
