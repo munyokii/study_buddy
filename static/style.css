@@ -47,10 +47,6 @@ header p {
   transition: transform 0.3s ease;
 }
 
-.input-section:hover {
-  transform: translateY(-5px);
-}
-
 .form-group {
   margin-bottom: 20px;
 }
@@ -66,7 +62,7 @@ header p {
 
 .topic-input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #0b0d19;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
@@ -84,6 +80,39 @@ textarea {
 
 textarea:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #0b0d19;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Button Styles */
+.generate-btn {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(160deg, #999999, #040404);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.generate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(10, 13, 24, 0.4);
+}
+
+.generate-btn:active {
+  transform: translateY(0);
+}
+
+.generate-btn.loading .btn-text {
+  opacity: 0;
+}
+
+.generate-btn.loading .loader {
+  display: block;
 }
