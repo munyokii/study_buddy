@@ -294,3 +294,19 @@ textarea:focus {
   font-size: 0.9rem;
   background: white;
 }
+
+/* Animations */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.flashcard {
+  animation: slideInUp 0.5s ease-out;
+}
