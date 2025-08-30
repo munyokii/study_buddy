@@ -22,3 +22,52 @@ class DatabaseManager:
         except Error as e:
             print(f'Error connecting to database: {e}')
             return None
+
+    def initialize_database(self):
+        """Function to create database and tables if they do not exist"""
+        try:
+            connection = mysql.connector.connect(
+                host = Config.DB_HOST,
+                user = Config.DB_USER,
+                password = Config.DB_PASSWORD
+            )
+            cursor = connection.cursor()
+            cursor.execute(f"CREATE DATABASE IF NOT EXISTS {Config.DB_NAME}")
+            cursor.close()
+            connection.close()
+
+
+            # Creating database table
+            connection = self.create_connection()
+            cursor = connection.cursor()
+
+            create_flashcards_table ="""
+            CREATE TABLE IF NOT EXISTS flashcards (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                question TEXT NOT NULL,
+                answer TEXT NOT NULL,
+                topic VARCHAR(255),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                difficulty ENUM('easy', 'medium', 'hard') DEFAULT 'medium'
+            )
+            """
+
+            create_study_sessions_table = """
+            CREATE TABLE IF NOT EXISTS study_sessions (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                session_name VARCHAR(255) NOT NULL,
+                original_text LONGTEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+            """
+
+            cursor.execute(create_flashcards_table)
+            cursor.execute(create_study_sessions_table)
+            connection.commit()
+            cursor.close()
+            connection.close()
+
+            print("Database initialized successfully!")
+
+        except Error as e:
+            print(f"Error initializing database: {e}")
