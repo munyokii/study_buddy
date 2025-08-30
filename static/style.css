@@ -188,3 +188,55 @@ textarea:focus {
   color: #666;
   font-weight: 500;
 }
+
+/* Flashcard Styles */
+.flashcard-container {
+  perspective: 1000px;
+  margin-bottom: 30px;
+}
+
+.flashcard {
+  width: 100%;
+  height: 300px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.flashcard.flipped {
+  transform: rotateY(180deg);
+}
+
+.flashcard-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.flashcard-front {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}
+
+.flashcard-back {
+  background: linear-gradient(135deg, #f093fb, #f5576c);
+  color: white;
+  transform: rotateY(180deg);
+}
+
+.flashcard:hover .flashcard-face {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
