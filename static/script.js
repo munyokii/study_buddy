@@ -161,14 +161,24 @@ class FlashcardApp {
           <div class="flashcard-front">
             <div class="card-header">Question</div>
             <div class="card-content">${currentCard.question}</div>
+            <div class="flip-hint">Click to reveal answer</div>
           </div>
           <div class="flashcard-back">
             <div class="card-header">Answer</div>
             <div class="card-content">${currentCard.answer}</div>
+            <div class="flip-hint">Click to show question</div>
           </div>
         </div>
       </div>
     `;
+
+    const flashcard = document.getElementById('current-flashcard');
+    if (flashcard) {
+      flashcard.addEventListener('click', () => {
+        this.flipCurrentCard();
+      });
+      flashcard.style.cursor = 'pointer';
+    }
 
     const currentCardSpan = document.getElementById('current-card');
     const totalCardsSpan = document.getElementById('total-cards');
@@ -292,6 +302,7 @@ class FlashcardApp {
       return;
     }
     
+    // Group flashcards by topic
     const groupedCards = flashcards.reduce((groups, card) => {
       const topic = card.topic || 'General';
       if (!groups[topic]) groups[topic] = [];
@@ -405,7 +416,6 @@ class FlashcardApp {
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
     
-    // Add icon based on type
     const icons = {
       success: '✅',
       error: '❌',
@@ -512,115 +522,3 @@ class FlashcardApp {
 document.addEventListener('DOMContentLoaded', () => {
   window.flashcardApp = new FlashcardApp();
 });
-
-const toastCSS = `
-.toast-container {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 10000;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  pointer-events: none;
-}
-
-.toast {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  min-width: 300px;
-  max-width: 500px;
-  opacity: 0;
-  transform: translateX(100%);
-  transition: all 0.3s ease-in-out;
-  pointer-events: auto;
-  overflow: hidden;
-}
-
-.toast.toast-show {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.toast.toast-hide {
-  opacity: 0;
-  transform: translateX(100%);
-}
-
-.toast-content {
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  position: relative;
-}
-
-.toast-icon {
-  font-size: 20px;
-  flex-shrink: 0;
-}
-
-.toast-message {
-  flex: 1;
-  font-size: 14px;
-  line-height: 1.4;
-  color: #333;
-}
-
-.toast-close {
-  background: none;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-  color: #666;
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background-color 0.2s;
-}
-
-.toast-close:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.toast-success {
-  border-left: 4px solid #10b981;
-}
-
-.toast-error {
-  border-left: 4px solid #ef4444;
-}
-
-.toast-warning {
-  border-left: 4px solid #f59e0b;
-}
-
-.toast-info {
-  border-left: 4px solid #3b82f6;
-}
-
-@media (max-width: 768px) {
-  .toast-container {
-    top: 10px;
-    right: 10px;
-    left: 10px;
-  }
-  
-  .toast {
-    min-width: unset;
-    max-width: unset;
-  }
-}
-`;
-
-if (!document.getElementById('toast-styles')) {
-  const style = document.createElement('style');
-  style.id = 'toast-styles';
-  style.textContent = toastCSS;
-  document.head.appendChild(style);
-}
