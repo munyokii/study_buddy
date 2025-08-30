@@ -24,7 +24,7 @@ class DatabaseManager:
             return None
 
     def initialize_database(self):
-        """Function to create database and tables if they do not exist"""
+        """Method to create database and tables if they do not exist"""
         try:
             connection = mysql.connector.connect(
                 host = Config.DB_HOST,
@@ -119,7 +119,7 @@ class DatabaseManager:
             return []
 
     def save_study_session(self, session_name, original_text):
-        """Function to saving study session"""
+        """Method to saving study session"""
         try:
             connection = self.create_connection()
             cursor = connection.cursor()
