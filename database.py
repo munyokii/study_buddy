@@ -71,3 +71,26 @@ class DatabaseManager:
 
         except Error as e:
             print(f"Error initializing database: {e}")
+
+    def save_flashcard(self, question, answer, topic='General', difficulty='medium'):
+        """Saving a flash card to the database"""
+        try:
+            connection = self.create_connection()
+            cursor = connection.cursor()
+
+            query = """
+            INSERT INTO flashcards (question, answer, topic, difficulty)
+            VALUES (%s, %s, %s, %s)
+            """
+            cursor.execute(query, (question, answer, topic, difficulty))
+            connection.commit()
+
+            flashcard_id = cursor.lastrowid
+            cursor.close()
+            connection.close()
+
+            return flashcard_id
+
+        except Error as e:
+            print(f"Error saving flashcard: {e}")
+            return None
