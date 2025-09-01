@@ -36,7 +36,7 @@ class QuestionGenerator:
                 }
             }
 
-            response = requests.post(API_URL, headers=self.headers, json=payload)
+            response = requests.post(API_URL, headers=self.headers, json=payload, timeout=30)
 
             if response.status_code == 200:
                 result = response.json()
@@ -57,7 +57,7 @@ class QuestionGenerator:
 
         for i, sentence in enumerate(sentences[:5]):
             if len(sentence.strip()) > 20:
-                # Questions type
+
                 question_type = keywords[i % len(keywords)]
 
                 if question_type == 'what':
@@ -104,7 +104,6 @@ class QuestionGenerator:
             elif current_answer:
                 current_answer += " " + line
 
-        # Question-answer pair
         if current_question and current_answer:
             questions.append({
                 'question': current_question,
@@ -129,8 +128,7 @@ def generate_flashcards():
 
         if not study_text:
             return jsonify({'error': 'No text provided'}), 400
-        
-        # Generating questions using AI
+
         generator = QuestionGenerator()
         questions = generator.generate_questions_huggingface(study_text)
 
@@ -151,7 +149,7 @@ def generate_flashcards():
                     'topic': topic,
                     'difficulty': q.get('difficulty', 'medium')
                 })
-        
+
         # Saving session
         session_id = db.save_study_session(f"Session - {topic}", study_text)
 
