@@ -25,13 +25,13 @@ class FlashcardApp {
     try {
       const response = await fetch('/get_flashcards');
       const data = await response.json();
-      
+
       if (response.ok && data.flashcards) {
         const topics = [...new Set(data.flashcards.map(card => card.topic))];
         const topicFilter = document.getElementById('topic-filter');
-        
+
         topicFilter.innerHTML = '<option value="">All Topics</option>';
-        
+
         topics.forEach(topic => {
           if (topic) {
             const option = document.createElement('option');
@@ -76,12 +76,23 @@ class FlashcardApp {
     });
 
     document.addEventListener('keydown', (e) => {
-      if (this.flashcards.length > 0) {
-        switch(e.key) {
+      const activeElement = document.activeElement;
+      const isInputFocused = activeElement && (
+        activeElement.tagName === 'INPUT' ||
+        activeElement.tagName === 'TEXTAREA' ||
+        activeElement.contentEditable === 'true' ||
+        activeElement.isContentEditable
+      );
+
+
+      if (!isInputFocused && this.flashcards.length > 0) {
+        switch (e.key) {
           case 'ArrowLeft':
+            e.preventDefault();
             this.previousCard();
             break;
           case 'ArrowRight':
+            e.preventDefault();
             this.nextCard();
             break;
           case ' ':
@@ -113,7 +124,7 @@ class FlashcardApp {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          text:studyText,
+          text: studyText,
           topic: topic
         })
       });
@@ -154,7 +165,7 @@ class FlashcardApp {
 
     const flashcardContainer = document.getElementById('flashcard-container');
     const currentCard = this.flashcards[this.currentCardIndex];
-    
+
     flashcardContainer.innerHTML = `
       <div class="flashcard ${this.isFlipped ? 'flipped' : ''}" id="current-flashcard">
         <div class="flashcard-inner">
@@ -202,7 +213,7 @@ class FlashcardApp {
 
   nextCard() {
     if (this.flashcards.length === 0) return;
-    
+
     this.currentCardIndex = (this.currentCardIndex + 1) % this.flashcards.length;
     this.isFlipped = false;
     this.displayFlashcards();
@@ -210,9 +221,9 @@ class FlashcardApp {
 
   previousCard() {
     if (this.flashcards.length === 0) return;
-    
-    this.currentCardIndex = this.currentCardIndex === 0 
-      ? this.flashcards.length - 1 
+
+    this.currentCardIndex = this.currentCardIndex === 0
+      ? this.flashcards.length - 1
       : this.currentCardIndex - 1;
     this.isFlipped = false;
     this.displayFlashcards();
@@ -271,20 +282,20 @@ class FlashcardApp {
 
   async loadFlashcardsFromServer() {
     const topic = document.getElementById('topic-filter').value || '';
-    
+
     try {
       const response = await fetch(`/get_flashcards?topic=${encodeURIComponent(topic)}`);
       const data = await response.json();
-      
+
       if (response.ok && data.flashcards && data.flashcards.length > 0) {
         this.flashcards = data.flashcards;
         this.currentCardIndex = 0;
         this.isFlipped = false;
-        
+
         this.displayFlashcards();
         this.displaySavedFlashcards(data.flashcards);
         document.getElementById('flashcards-section').style.display = 'block';
-        
+
         this.showToast(`Loaded ${data.flashcards.length} flashcards from server`, 'success');
       } else {
         throw new Error('No flashcards found on server');
@@ -296,12 +307,12 @@ class FlashcardApp {
 
   displaySavedFlashcards(flashcards) {
     const container = document.getElementById('saved-flashcards-container');
-    
+
     if (!flashcards || flashcards.length === 0) {
       container.innerHTML = '<p>No saved flashcards found.</p>';
       return;
     }
-    
+
     // Group flashcards by topic
     const groupedCards = flashcards.reduce((groups, card) => {
       const topic = card.topic || 'General';
@@ -309,7 +320,7 @@ class FlashcardApp {
       groups[topic].push(card);
       return groups;
     }, {});
-    
+
     let html = '';
     Object.keys(groupedCards).forEach(topic => {
       const cards = groupedCards[topic];
@@ -330,18 +341,18 @@ class FlashcardApp {
         </div>
       `;
     });
-    
+
     container.innerHTML = html;
   }
 
   loadSpecificCard(topic, cardIndex) {
     const topicCards = this.flashcards.filter(card => (card.topic || 'General') === topic);
     if (topicCards.length > 0 && cardIndex < topicCards.length) {
-      const globalIndex = this.flashcards.findIndex(card => 
-        (card.topic || 'General') === topic && 
+      const globalIndex = this.flashcards.findIndex(card =>
+        (card.topic || 'General') === topic &&
         card.question === topicCards[cardIndex].question
       );
-      
+
       if (globalIndex !== -1) {
         this.currentCardIndex = globalIndex;
         this.isFlipped = false;
@@ -361,14 +372,14 @@ class FlashcardApp {
           this.flashcards = data.flashcards;
           this.currentCardIndex = data.currentIndex || 0;
           this.isFlipped = false;
-          
+
           if (this.currentCardIndex >= this.flashcards.length) {
             this.currentCardIndex = 0;
           }
-          
+
           this.displayFlashcards();
           document.getElementById('flashcards-section').style.display = 'block';
-          
+
           const timestamp = new Date(data.timestamp).toLocaleString();
           this.showToast(`Loaded ${data.flashcards.length} saved flashcards from ${timestamp}`, 'success');
         } else {
@@ -386,7 +397,7 @@ class FlashcardApp {
   updateNavigationButtons() {
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
-    
+
     if (prevBtn && nextBtn) {
       if (this.flashcards.length <= 1) {
         prevBtn.disabled = true;
@@ -400,7 +411,7 @@ class FlashcardApp {
 
   setLoadingState(button, isLoading) {
     if (!button) return;
-    
+
     if (isLoading) {
       button.disabled = true;
       button.innerHTML = '<span class="loading-spinner"></span> Generating...';
@@ -415,14 +426,14 @@ class FlashcardApp {
   showToast(message, type = 'info', duration = 5000) {
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
-    
+
     const icons = {
       success: '✅',
       error: '❌',
       warning: '⚠️',
       info: 'ℹ️'
     };
-    
+
     toast.innerHTML = `
       <div class="toast-content">
         <span class="toast-icon">${icons[type] || icons.info}</span>
@@ -430,11 +441,11 @@ class FlashcardApp {
         <button class="toast-close" onclick="this.parentElement.parentElement.remove()">×</button>
       </div>
     `;
-    
+
     this.toastContainer.appendChild(toast);
-    
+
     setTimeout(() => toast.classList.add('toast-show'), 10);
-    
+
     setTimeout(() => {
       toast.classList.add('toast-hide');
       setTimeout(() => {
@@ -443,7 +454,7 @@ class FlashcardApp {
         }
       }, 300);
     }, duration);
-    
+
     const toasts = this.toastContainer.querySelectorAll('.toast');
     if (toasts.length > 5) {
       toasts[0].remove();
@@ -471,14 +482,14 @@ class FlashcardApp {
     const dataStr = JSON.stringify(this.flashcards, null, 2);
     const dataBlob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(dataBlob);
-    
+
     const link = document.createElement('a');
     link.href = url;
     link.download = `flashcards_${new Date().toISOString().split('T')[0]}.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    
+
     URL.revokeObjectURL(url);
     this.showToast('Flashcards exported successfully!', 'success');
   }
@@ -489,10 +500,10 @@ class FlashcardApp {
       try {
         const importedCards = JSON.parse(e.target.result);
         if (Array.isArray(importedCards) && importedCards.length > 0) {
-          const isValid = importedCards.every(card => 
+          const isValid = importedCards.every(card =>
             card.hasOwnProperty('question') && card.hasOwnProperty('answer')
           );
-          
+
           if (isValid) {
             this.flashcards = importedCards;
             this.currentCardIndex = 0;
