@@ -13,7 +13,7 @@ An intelligent flashcard generator that transforms your study notes into interac
 
 ## 🚀 Live Demo
 
-🔗 **[View Live Demo](https://your-demo-link.com)**
+🔗 **[View Live Demo](https://aistudybuddy-jgv3.onrender.com)**
 
 *Try it out with sample study notes to see the AI in action!*
 
