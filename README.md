@@ -99,25 +99,16 @@ pip install -r requirements.txt
 
 ### 3. Database Configuration
 ```bash
-# Create MySQL database
-By running the application and you have installed MySQL, the database will be created automatically.
+# Create PostgreSQL database
+Provide a postgresql url and the database will be initiated
 ```
 
 ### 4. Environment Variables
 Create a `.env` file in the root directory:
 ```env
-DB_HOST=localhost
-DB_USER=your-local-machine-user-maybe-root-user
-DB_PASSWORD=your-password
-DB_NAME=provide-name-you-want-to-call-your-database
 SECRET_KEY=your-secret-key-here
-DATABASE_URL=mysql://yourlocaluser:yourpassword@localhost/yourdatabasename
+DATABASE_URL=provide-a-postgres-url
 HUGGING_API_KEY=your-huggingface-api-key
-```
-
-### 5. Initialize Database
-```bash
-flask db upgrade
 ```
 
 ### 6. Run the Application
@@ -172,9 +163,8 @@ study_buddy/
 3. Add the token to your `.env` file
 
 ### MySQL Configuration
-- **Development**: SQLite for quick setup
-- **Production**: MySQL with connection pooling
-- **Backup**: Automated daily backups recommended
+- **Development**: MySQL for quick setup
+- **Production**: PostgreSQL with connection pooling
 
 ## 🎯 Usage
 
@@ -225,20 +215,16 @@ python -m pytest tests/ -v --coverage
 
 ## 🚀 Deployment
 
-### Docker Deployment
-```bash
-# Build image
-docker build -t study_buddy .
-
-# Run container
-docker run -p 5000:5000 --env-file .env study_buddy
-```
+### Render Deployment
+1. Create a Render account
+2. Create a new Web Service
+3. Connect your GitHub repository
+4. Set environment variables from your `.env` file
+5. Deploy your application
 
 ### Production Environment
 - **Web Server**: Gunicorn + Nginx
-- **Database**: MySQL with read replicas
-- **Caching**: Redis for session management
-- **Monitoring**: Application performance monitoring
+- **Database**: PostgreSQL with read replicas
 
 ## 🤝 Contributing
 
